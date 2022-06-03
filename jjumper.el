@@ -24,6 +24,8 @@
 ;; of completion
 
 ;;; Code:
+(require 'json)
+
 (defun jjumper--is-object (json)
   (listp json))
 
