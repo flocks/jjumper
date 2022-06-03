@@ -30,7 +30,9 @@
   (listp json))
 
 (defun jjumper--get-level-keys (json)
+  "Get all keys at the current level."
   (mapcar #'car json))
+
 (defun jjumper--get-keys (json path)
   "Given a JSON object (with `json-object-type' set to `alist')
 returns a string containing all the paths.
