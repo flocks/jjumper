@@ -52,3 +52,4 @@ following snippet:
 
 - It doesn't handle array for now, because I personnally don't really need it. But
   I definitely will handle that soon.
+- Potentially handle different configuration format like YAML
