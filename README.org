@@ -1,0 +1,51 @@
+* jjumper.el
+
+
+* Instructions
+
+** Installation
+
+You can just put `jjumper.el` somewhere in your *load-path* and eval the file.
+You can also use use-package with straight:
+
+#+BEGIN_SRC emacs-lisp
+  (use-package jjumper
+	:straight ()
+	:config
+	(define-key json-mode-map (kbd "C-c C-j") 'jjumper-jump-key))
+#+END_SRC
+
+
+* Usage
+
+The most common usecase, is to bind *jjumper-jump-key* to some convenience keychord
+in *json-mode-map*
+
+#+BEGIN_SRC emacs-lisp
+  (define-key json-mode-map (kbd "C-c C-j") 'jjumper-jump-key)
+#+END_SRC
+
+** Other usecases
+
+Since it's using native completion system (*completing-read*), you can leverage
+*embark* for copying the path, or inserting somewhere.
+
+I personnaly use it in a frontend application, where all translations keys are stored
+in a single json file. I can quickly search and insert a path in my code with the
+following snippet:
+
+#+BEGIN_SRC emacs-lisp
+  (defun ft-insert-translation-key ()
+  "Insert a translation key"
+	(interactive)
+	(let ((key (with-current-buffer
+				   (find-file-noselect "~/project/path/to/translation.json")
+				 (jjumper--prompt (ft-json--get-json-in-buffer)))))
+	  (insert key)))
+#+END_SRC
+
+
+* Todo
+
+- It doesn't handle array for now, because I personnally don't really need it. But
+  I definitely will handle that in the future
