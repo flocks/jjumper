@@ -39,11 +39,11 @@ following snippet:
 
 #+BEGIN_SRC emacs-lisp
   (defun ft-insert-translation-key ()
-  "Insert a translation key"
+	"Insert a translation key"
 	(interactive)
 	(let ((key (with-current-buffer
 				   (find-file-noselect "~/project/path/to/translation.json")
-				 (jjumper--prompt (ft-json--get-json-in-buffer)))))
+				 (jjumper--prompt (jjumper--get-json-in-buffer)))))
 	  (insert key)))
 #+END_SRC
 
