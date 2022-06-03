@@ -1,7 +1,10 @@
 * jjumper.el
 
+Quickly jump to a nested key in a json buffer
 
-* Instructions
+** Overview
+
+[[https://github.com/flocks/jjumper/raw/main/jjumper.gif]]
 
 ** Installation
 
@@ -48,4 +51,4 @@ following snippet:
 * Todo
 
 - It doesn't handle array for now, because I personnally don't really need it. But
-  I definitely will handle that in the future
+  I definitely will handle that soon.
