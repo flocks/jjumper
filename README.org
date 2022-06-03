@@ -13,7 +13,7 @@ You can also use use-package with straight:
 
 #+BEGIN_SRC emacs-lisp
   (use-package jjumper
-	:straight ()
+	:straight (jjumper :type git :host github :repo "flocks/jjumper")
 	:config
 	(define-key json-mode-map (kbd "C-c C-j") 'jjumper-jump-key))
 #+END_SRC
