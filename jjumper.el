@@ -26,31 +26,33 @@
 ;;; Code:
 (require 'json)
 
-(defun jjumper--is-object (json)
-  (listp json))
 
-(defun jjumper--get-level-keys (json)
-  "Get all keys at the current level."
-  (mapcar #'car json))
 
-(defun jjumper--get-keys (json path)
-  "Given a JSON object (with `json-object-type' set to `alist')
-returns a string containing all the paths.
-
-eg: 'key1.subkey key2 key3.subkey'
-
-PATH is the initial accumulator."
-  (if (not (jjumper--is-object json))
+(defun jjumper--traverse-object (object path)
+  (if (and (not (vectorp object)) (not (listp object)))
 	  path
-	(let ((keys (jjumper--get-level-keys json)))
-	  (mapconcat
-	   (lambda (key)
-		 (jjumper--get-keys
-		  (alist-get key json)
-		  (concat path (and (not (string-equal path "")) ".") (symbol-name key))))
-	   keys
-	   " ")
-	  )))
+	(if (vectorp object)
+		(jjumper--traverse-array object path)
+	  (let ((keys (mapcar #'car object)))
+		(mapconcat
+		 (lambda (key)
+		   (jjumper--traverse-object
+			(alist-get key object)
+			(concat path (and (not (string-equal path "")) ".") (symbol-name key))))
+		 keys
+		 " ")
+		))))
+
+(defun jjumper--traverse-array (array path)
+  (if (or (eq 0 (length array))
+		  (not (listp (aref array 0))))
+	  path
+	(let ((count -1))
+	  (mapconcat (lambda (item)
+				   (setq count (+ 1 count))
+				   (mapconcat (lambda (sub-path) (format "%s[%s].%s" path count sub-path))
+							  (split-string (jjumper--traverse-object item "")) " ")
+				   ) array " "))))
 
 (defun jjumper--ensure-json-mode ()
   "Ensure current buffer is in json-mode."
@@ -68,7 +70,7 @@ PATH is the initial accumulator."
   "Prompt user for a path contained by JSON.
 
 It returns the selected key as a string. eg: 'key1.subkey'"
-  (completing-read "Key: " (split-string (jjumper--get-keys json ""))))
+  (completing-read "Key: " (split-string (jjumper--traverse-object json ""))))
 
 ;;;###autoload
 (defun jjumper-jump-key ()

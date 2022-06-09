@@ -50,6 +50,5 @@ following snippet:
 
 * Todo
 
-- It doesn't handle array for now, because I personnally don't really need it. But
-  I definitely will handle that soon.
+- it doesn't handle jumping to a key inside an array for now
 - Potentially handle different configuration format like YAML
