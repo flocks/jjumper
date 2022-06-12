@@ -48,11 +48,13 @@
 		  (not (listp (aref array 0))))
 	  path
 	(let ((count -1))
-	  (mapconcat (lambda (item)
-				   (setq count (+ 1 count))
-				   (mapconcat (lambda (sub-path) (format "%s[%s].%s" path count sub-path))
-							  (split-string (jjumper--traverse-object item "")) " ")
-				   ) array " "))))
+	  (mapconcat
+	   (lambda (item)
+		 (setq count (+ 1 count))
+		 (mapconcat
+		  (lambda (sub-path) (format "%s[%s].%s" path count sub-path))
+		  (split-string (jjumper--traverse-object item "")) " ")
+		 ) array " "))))
 
 (defun jjumper--ensure-json-mode ()
   "Ensure current buffer is in json-mode."
