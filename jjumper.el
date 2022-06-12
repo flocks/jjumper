@@ -87,9 +87,16 @@ It returns the selected key as a string. eg: 'key1.subkey'"
   (let ((keys (split-string key "\\."))
 		(case-fold-search nil))
 	(goto-char (point-min))
-	(dolist (k keys)
-	  (re-search-forward k))))
-
+	(let ((count 1))
+	  (dolist (k keys)
+		(save-match-data
+		  (let* ((match (string-match "\\(.*\\)\\[\\([0-9]+\\)\\]" k))
+				 (key (if match (match-string 1 k) k))
+				 (n-count (if match (+ 1 (string-to-number (match-string 2 k))) 1)))
+			(dolist (x (make-list count nil))
+			  (re-search-forward key))
+			(setq count n-count)))
+		))))
 
 (provide 'jjumper)
 ;;; jjumper.el ends here
