@@ -26,8 +26,6 @@
 ;;; Code:
 (require 'json)
 
-
-
 (defun jjumper--traverse-object (object path)
   (if (and (not (vectorp object)) (not (listp object)))
 	  path
@@ -58,7 +56,8 @@
 
 (defun jjumper--ensure-json-mode ()
   "Ensure current buffer is in json-mode."
-  (unless (eq major-mode 'json-mode)
+  (unless (or (eq major-mode 'json-mode)
+			  (eq major-mode 'json-ts-mode))
 	(user-error "Not inside a json buffer.")))
 
 (defun jjumper--get-json-in-buffer ()
